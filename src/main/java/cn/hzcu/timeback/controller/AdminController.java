@@ -5,6 +5,8 @@ import cn.hzcu.timeback.entity.Admin;
 import cn.hzcu.timeback.entity.R;
 import cn.hzcu.timeback.service.IAdminService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +22,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/Admin")
+@Api
 public class AdminController {
     @Autowired
     private IAdminService AdminService;
     @PostMapping("/login")
+    @ApiOperation(value = "login")
     public R<Admin> login(@RequestBody Admin admin){
         String password = admin.getPassword();
         //从数据库中查找用户
@@ -41,11 +45,13 @@ public class AdminController {
         return  R.success(man);
     }
     @GetMapping("/list")
+    @ApiOperation(value = "list")
     public R<List<Admin>> list(){
         List<Admin> list = AdminService.list();
         return R.success(list);
     }
     @PutMapping("/update")
+    @ApiOperation(value = "update")
     public R<String> updateAdmin(@RequestBody Admin Admin){
         AdminService.updateById(Admin);
         return R.success("更新成功");
