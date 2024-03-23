@@ -4,6 +4,7 @@ package cn.hzcu.timeback.controller;
 import cn.hzcu.timeback.entity.R;
 import cn.hzcu.timeback.entity.User;
 import cn.hzcu.timeback.service.IUserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +32,20 @@ public class UserController {
     @PostMapping("/login")
 
     public R<User> login(@RequestBody User user){
-        return R.error("hh");
+        String password = user.getPassword();
+        //从数据库中查找用户
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getEmail,user.getEmail());
+        User man = userService.getOne(queryWrapper);
+        //如果没有找到
+        if(man == null){
+            return R.error("登录失败");
+        }
+        //找到后匹配密码
+        if(!man.getPassword().equals(password)){
+            return R.error("密码错误");
+        }
+        return  R.success(man);
     }
 
 
