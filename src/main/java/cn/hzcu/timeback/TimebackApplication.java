@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan
+@MapperScan("cn.hzcu.timeback.mapper")
 public class TimebackApplication {
 
 	public static void main(String[] args) {

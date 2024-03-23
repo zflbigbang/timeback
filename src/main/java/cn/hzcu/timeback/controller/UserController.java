@@ -1,9 +1,11 @@
 package cn.hzcu.timeback.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import cn.hzcu.timeback.entity.R;
+import cn.hzcu.timeback.entity.User;
+import cn.hzcu.timeback.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -16,5 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    private IUserService userService;
+    @PostMapping("/login")
+    public R<User> login(@RequestBody User user){
+        return R.error("hh");
+    }
+
+
 
 }
