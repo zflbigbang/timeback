@@ -4,9 +4,16 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.groups.Default;
 
 /**
  * <p>
@@ -25,19 +32,21 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
+    @NotNull(groups = Update.class)
     private Integer id;
-
     private Integer sex;
 
     private Integer age;
 
     private String name;
-
     private String password;
-
+    @Email
     private String email;
 
     private Integer timecoin;
 
-
+    public interface Add extends Default {
+    }
+    public interface Update extends Default {
+    }
 }

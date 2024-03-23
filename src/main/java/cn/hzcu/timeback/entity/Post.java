@@ -5,9 +5,16 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.groups.Default;
 
 /**
  * <p>
@@ -26,14 +33,13 @@ public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
+    @NotNull(groups = Update.class)
     private Integer id;
-
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime starttime;
-
+    @NotNull
     private Integer userId;
-
     private Integer ispass;
-
     private Integer isend;
 
     private Integer timecoin;
@@ -42,5 +48,9 @@ public class Post implements Serializable {
 
     private String content;
 
+    public interface Add extends Default {
+    }
+    public interface Update extends Default {
+    }
 
 }

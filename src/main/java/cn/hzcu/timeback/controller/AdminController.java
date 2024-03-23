@@ -8,8 +8,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.groups.Default;
 import java.util.List;
 
 /**
@@ -50,11 +52,29 @@ public class AdminController {
         List<Admin> list = AdminService.list();
         return R.success(list);
     }
-    @PutMapping("/update")
+    @GetMapping()
+    @ApiOperation(value = "getById")
+    public R<Admin> getAdmin(@RequestParam Integer id){
+        return R.success(AdminService.getById(id));
+    }
+    @PostMapping
+    @ApiOperation(value = "save")
+    public R<String> save(@RequestBody @Validated(Admin.Add.class) Admin Admin){
+        AdminService.save(Admin);
+        return R.success();
+    }
+    @PutMapping()
     @ApiOperation(value = "update")
-    public R<String> updateAdmin(@RequestBody Admin Admin){
+    public R<String> updateAdmin(@RequestBody @Validated(Admin.Update.class) Admin Admin){
         AdminService.updateById(Admin);
-        return R.success("更新成功");
+        return R.success();
+    }
+
+    @DeleteMapping()
+    @ApiOperation(value = "delete")
+    public R<String> deleteAdmin(@RequestParam Integer id){
+        AdminService.removeById(id);
+        return R.success();
     }
 
 }

@@ -25,9 +25,15 @@ public class R<T> implements Serializable {
         R<T> r = new R<T>();
         r.data = object;
         r.code = 1;
+        r.msg = "操作成功";
         return r;
     }
-
+    public static <T> R<T> success() {
+        R<T> r = new R<T>();
+        r.msg = "操作成功";
+        r.code = 1;
+        return r;
+    }
     public static <T> R<T> error(String msg) {
         R r = new R();
         r.msg = msg;

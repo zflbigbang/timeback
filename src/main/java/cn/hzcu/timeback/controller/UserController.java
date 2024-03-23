@@ -1,6 +1,7 @@
 package cn.hzcu.timeback.controller;
 
 
+import cn.hzcu.timeback.entity.Admin;
 import cn.hzcu.timeback.entity.R;
 import cn.hzcu.timeback.entity.User;
 import cn.hzcu.timeback.service.IUserService;
@@ -10,7 +11,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -47,7 +51,36 @@ public class UserController {
         }
         return  R.success(man);
     }
+    @GetMapping("/list")
+    @ApiOperation(value = "list")
+    public R<List<User>> list(){
+        List<User> list = userService.list();
+        return R.success(list);
+    }
+    @GetMapping()
+    @ApiOperation(value = "getById")
+    public R<User> getAdmin(@RequestParam Integer id){
+        return R.success(userService.getById(id));
+    }
+    @PostMapping
+    @ApiOperation(value = "save")
+    public R<String> save(@RequestBody @Validated(User.Add.class) User user){
+        userService.save(user);
+        return R.success();
+    }
+    @PutMapping()
+    @ApiOperation(value = "update")
+    public R<String> updateAdmin(@RequestBody @Validated(User.Update.class) User user){
+        userService.updateById(user);
+        return R.success();
+    }
 
+    @DeleteMapping()
+    @ApiOperation(value = "delete")
+    public R<String> deleteAdmin(@RequestParam Integer id){
+        userService.removeById(id);
+        return R.success();
+    }
 
 
 }
