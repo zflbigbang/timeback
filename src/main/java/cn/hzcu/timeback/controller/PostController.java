@@ -47,6 +47,18 @@ public class PostController {
         return R.success(postList);
     }
 
+    @GetMapping("/search")
+    @ApiOperation(value = "search")
+    public R<List<Post>> searchByContent(@RequestParam String keyword) {
+        LambdaQueryWrapper<Post> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(Post::getContent, keyword);
+
+        List<Post> searchResult = postService.list(queryWrapper);
+
+        return R.success(searchResult);
+    }
+
+
     @PutMapping()
     @ApiOperation(value = "update")
     public R<String> updateManager(@RequestBody @Validated(Post.Update.class) Post post){
