@@ -3,7 +3,9 @@ package cn.hzcu.timeback.controller;
 
 import cn.hzcu.timeback.entity.Post;
 import cn.hzcu.timeback.entity.R;
+import cn.hzcu.timeback.entity.User;
 import cn.hzcu.timeback.service.IPostService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,14 @@ public class PostController {
     public R<Post> updateManager(@RequestParam Integer id){
         return R.success(postService.getById(id));
     }
+
+    @GetMapping("/userid")
+    @ApiOperation(value = "getByUserId")
+    public R<List<Post>> getByUserId(@RequestParam Integer userId) {
+        List<Post> postList = postService.lambdaQuery().eq(Post::getUserId,userId).list();
+        return R.success(postList);
+    }
+
     @PutMapping()
     @ApiOperation(value = "update")
     public R<String> updateManager(@RequestBody @Validated(Post.Update.class) Post post){
