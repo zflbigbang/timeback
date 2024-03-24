@@ -6,6 +6,8 @@ import cn.hzcu.timeback.entity.R;
 import cn.hzcu.timeback.entity.User;
 import cn.hzcu.timeback.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -53,9 +55,10 @@ public class UserController {
     }
     @GetMapping("/list")
     @ApiOperation(value = "list")
-    public R<List<User>> list(){
-        List<User> list = userService.list();
-        return R.success(list);
+    public R<IPage> list(@RequestParam(defaultValue = "1") Integer current,@RequestParam(defaultValue = "10") int size){
+        Page page = new Page(current,size);
+        IPage userPage = userService.page(page);
+        return R.success(userPage);
     }
     @GetMapping()
     @ApiOperation(value = "getById")
@@ -64,13 +67,13 @@ public class UserController {
     }
     @PostMapping
     @ApiOperation(value = "save")
-    public R<String> save(@RequestBody @Validated(User.Add.class) User user){
+    public R<String> save(@RequestBody @Validated(Admin.Add.class) User user){
         userService.save(user);
         return R.success();
     }
     @PutMapping()
     @ApiOperation(value = "update")
-    public R<String> updateAdmin(@RequestBody @Validated(User.Update.class) User user){
+    public R<String> updateAdmin(@RequestBody @Validated(Admin.Update.class) User user){
         userService.updateById(user);
         return R.success();
     }

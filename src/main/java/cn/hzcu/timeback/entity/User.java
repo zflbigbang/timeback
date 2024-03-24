@@ -32,7 +32,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    @NotNull(groups = Update.class)
+    @NotNull(groups = Admin.Update.class)
     private Integer id;
     private Integer sex;
 
@@ -45,8 +45,4 @@ public class User implements Serializable {
 
     private Integer timecoin;
 
-    public interface Add extends Default {
-    }
-    public interface Update extends Default {
-    }
 }

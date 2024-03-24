@@ -5,8 +5,11 @@ import cn.hzcu.timeback.entity.Admin;
 import cn.hzcu.timeback.entity.R;
 import cn.hzcu.timeback.service.IAdminService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,9 +51,10 @@ public class AdminController {
     }
     @GetMapping("/list")
     @ApiOperation(value = "list")
-    public R<List<Admin>> list(){
-        List<Admin> list = AdminService.list();
-        return R.success(list);
+    public R<IPage> list(@RequestParam(defaultValue = "1") Integer current,@RequestParam(defaultValue = "10") int size){
+        Page page = new Page(current,size);
+        IPage adminPage = AdminService.page(page);
+        return R.success(adminPage);
     }
     @GetMapping()
     @ApiOperation(value = "getById")

@@ -1,11 +1,13 @@
 package cn.hzcu.timeback.controller;
 
 
+import cn.hzcu.timeback.entity.Admin;
 import cn.hzcu.timeback.entity.Post;
 import cn.hzcu.timeback.entity.R;
-import cn.hzcu.timeback.entity.User;
 import cn.hzcu.timeback.service.IPostService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +32,10 @@ public class PostController {
     private IPostService postService;
     @GetMapping("/list")
     @ApiOperation(value = "list")
-    public R<List<Post>> list(){
-        List<Post> list = postService.list();
-        return R.success(list);
+    public R<IPage> list(@RequestParam(defaultValue = "1") Integer current,@RequestParam(defaultValue = "10") int size){
+        Page page = new Page(current,size);
+        IPage postPage = postService.page(page);
+        return R.success(postPage);
     }
     @GetMapping()
     @ApiOperation(value = "getById")
@@ -49,25 +52,26 @@ public class PostController {
 
     @GetMapping("/search")
     @ApiOperation(value = "search")
-    public R<List<Post>> searchByContent(@RequestParam String keyword) {
+    public R<IPage> searchByContent(@RequestParam String keyword,@RequestParam(defaultValue = "1") Integer current,@RequestParam(defaultValue = "10") int size) {
         LambdaQueryWrapper<Post> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(Post::getContent, keyword);
 
         List<Post> searchResult = postService.list(queryWrapper);
-
-        return R.success(searchResult);
+        Page page = new Page(current,size);
+        IPage postPage = postService.page(page,queryWrapper);
+        return R.success(postPage);
     }
 
 
     @PutMapping()
     @ApiOperation(value = "update")
-    public R<String> updateManager(@RequestBody @Validated(Post.Update.class) Post post){
+    public R<String> updateManager(@RequestBody @Validated(Admin.Update.class) Post post){
         postService.updateById(post);
         return R.success();
     }
     @PostMapping()
     @ApiOperation(value = "save")
-    public R<String> save(@RequestBody @Validated(Post.Add.class) Post post){
+    public R<String> save(@RequestBody @Validated(Admin.Add.class) Post post){
         postService.save(post);
         return R.success();
     }

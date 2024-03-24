@@ -33,7 +33,7 @@ public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    @NotNull(groups = Update.class)
+    @NotNull(groups = Admin.Update.class)
     private Integer id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime starttime;
@@ -48,9 +48,5 @@ public class Post implements Serializable {
 
     private String content;
 
-    public interface Add extends Default {
-    }
-    public interface Update extends Default {
-    }
 
 }
