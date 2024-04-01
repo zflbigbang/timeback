@@ -29,6 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Api
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -41,7 +42,7 @@ public class UserController {
         String password = user.getPassword();
         //从数据库中查找用户
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getEmail,user.getEmail());
+        queryWrapper.eq(User::getName,user.getName());
         User man = userService.getOne(queryWrapper);
         //如果没有找到
         if(man == null){

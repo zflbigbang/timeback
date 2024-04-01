@@ -27,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/post")
 @Api
+@CrossOrigin
 public class PostController {
     @Autowired
     private IPostService postService;
@@ -52,7 +53,7 @@ public class PostController {
 
     @GetMapping("/search")
     @ApiOperation(value = "search")
-    public R<IPage> searchByContent(@RequestParam String keyword,@RequestParam(defaultValue = "1") Integer current,@RequestParam(defaultValue = "10") int size) {
+    public R<IPage> searchByContent(String keyword,@RequestParam(defaultValue = "1") Integer current,@RequestParam(defaultValue = "10") int size) {
         LambdaQueryWrapper<Post> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(Post::getContent, keyword);
 

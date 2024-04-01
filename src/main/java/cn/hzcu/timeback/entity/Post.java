@@ -35,7 +35,6 @@ public class Post implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     @NotNull(groups = Admin.Update.class)
     private Integer id;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime starttime;
     @NotNull
     private Integer userId;

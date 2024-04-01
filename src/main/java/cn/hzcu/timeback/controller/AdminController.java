@@ -26,8 +26,9 @@ import java.util.List;
  * @since 2024-03-22
  */
 @RestController
-@RequestMapping("/Admin")
+@RequestMapping("/admin")
 @Api
+@CrossOrigin
 public class AdminController {
     @Autowired
     private IAdminService AdminService;
@@ -37,7 +38,7 @@ public class AdminController {
         String password = admin.getPassword();
         //从数据库中查找用户
         LambdaQueryWrapper<Admin> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Admin::getEmail,admin.getEmail());
+        queryWrapper.eq(Admin::getName,admin.getName());
         Admin man = AdminService.getOne(queryWrapper);
         //如果没有找到
         if(man == null){
