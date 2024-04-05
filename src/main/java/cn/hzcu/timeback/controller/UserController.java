@@ -2,6 +2,7 @@ package cn.hzcu.timeback.controller;
 
 
 import cn.hzcu.timeback.entity.Admin;
+import cn.hzcu.timeback.entity.Post;
 import cn.hzcu.timeback.entity.R;
 import cn.hzcu.timeback.entity.User;
 import cn.hzcu.timeback.service.IUserService;
@@ -72,6 +73,19 @@ public class UserController {
         userService.save(user);
         return R.success();
     }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "search")
+    public R<IPage> searchByContent(String keyword,@RequestParam(defaultValue = "1") Integer current,@RequestParam(defaultValue = "10") int size) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(User::getName, keyword);
+
+        List<User> searchResult = userService.list(queryWrapper);
+        Page page = new Page(current,size);
+        IPage userPage = userService.page(page,queryWrapper);
+        return R.success(userPage);
+    }
+
     @PutMapping()
     @ApiOperation(value = "update")
     public R<String> updateAdmin(@RequestBody @Validated(Admin.Update.class) User user){
