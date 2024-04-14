@@ -69,9 +69,13 @@ public class PostController {
 
     @GetMapping("/userid")
     @ApiOperation(value = "getByUserId")
-    public R<List<Post>> getByUserId(@RequestParam Integer userId) {
-        List<Post> postList = postService.lambdaQuery().eq(Post::getUserId,userId).list();
-        return R.success(postList);
+    public R<IPage<Post>> getByUserId(@RequestParam Integer userId) {
+        LambdaQueryWrapper<Post> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Post::getUserId, userId);
+
+        Page<Post> page = new Page<>(1, 10); // 默认查询第一页，每页10条记录
+        IPage<Post> postPage = postService.page(page, queryWrapper);
+        return R.success(postPage);
     }
 
     @GetMapping("/search")
