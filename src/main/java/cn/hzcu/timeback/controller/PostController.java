@@ -38,6 +38,29 @@ public class PostController {
         IPage postPage = postService.page(page);
         return R.success(postPage);
     }
+
+    @GetMapping("/ispasslist")
+    @ApiOperation(value = "list")
+    public R<IPage> list1(@RequestParam(defaultValue = "1") Integer current, @RequestParam(defaultValue = "10") int size) {
+        Page<Post> page = new Page<>(current, size);
+        LambdaQueryWrapper<Post> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Post::getIspass, 1); // 过滤已通过审核的帖子
+        IPage<Post> postPage = postService.page(page, queryWrapper);
+        return R.success(postPage);
+    }
+
+    @GetMapping("/ispasssearch")
+    @ApiOperation(value = "search")
+    public R<IPage> searchByContent1(String keyword, @RequestParam(defaultValue = "1") Integer current, @RequestParam(defaultValue = "10") int size) {
+        LambdaQueryWrapper<Post> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(Post::getContent, keyword)
+                .eq(Post::getIspass, 1); // 过滤已通过审核的帖子
+
+        Page<Post> page = new Page<>(current, size);
+        IPage<Post> postPage = postService.page(page, queryWrapper);
+        return R.success(postPage);
+    }
+
     @GetMapping()
     @ApiOperation(value = "getById")
     public R<Post> updateManager(@RequestParam Integer id){
